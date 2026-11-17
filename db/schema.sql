@@ -1,4 +1,4 @@
--- B:Origin Attendance 핵심 스키마 (Supabase Postgres 와 로컬 데모용 PGlite 가 같이 쓴다)
+-- 불안구독해지센터 출석 핵심 스키마 (Supabase Postgres 와 로컬 데모용 PGlite 가 같이 쓴다)
 
 create table if not exists users (
   id uuid primary key default gen_random_uuid(),

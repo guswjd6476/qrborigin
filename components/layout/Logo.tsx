@@ -1,8 +1,8 @@
 /** 텍스트 워드마크. 실제 로고 파일이 생기면 이 컴포넌트만 바꾸면 된다. */
 export function Logo({ className = "text-xl" }: { className?: string }) {
   return (
-    <span className={`font-black tracking-tight text-brand ${className}`} aria-label="B:Origin">
-      B<span className="text-leaf">:</span>Origin
+    <span className={`font-black tracking-tight text-brand ${className}`}>
+      불안구독해지센터
     </span>
   );
 }

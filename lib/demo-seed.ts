@@ -15,7 +15,7 @@ export async function seedDemo(run: Runner) {
   const ids: string[] = [];
   for (const u of DEMO_USERS) ids.push(await upsertUser(run, u.uid, u.name, u.pin));
   const { id: programId } = await createProgram(run, {
-    program_name: "B:Origin 시즌 프로그램",
+    program_name: "불안구독해지센터 시즌 프로그램",
     start_date: addDays(today, -42),
     end_date: addDays(today, 42),
     weekly_attendance_goal: 3,

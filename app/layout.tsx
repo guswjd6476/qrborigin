@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "B:Origin Attendance",
-  description: "B:Origin QR 출석 인증",
+  title: "불안구독해지센터 출석",
+  description: "불안구독해지센터 QR 출석 인증",
 };
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#ffffff" };

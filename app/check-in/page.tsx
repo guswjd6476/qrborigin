@@ -2,7 +2,7 @@ import { isAdmin } from "@/lib/auth";
 import { Kiosk } from "@/components/camera/Kiosk";
 import { AdminLogin } from "@/components/dashboard/AdminLogin";
 
-export const metadata = { title: "출석 인증 · B:Origin" };
+export const metadata = { title: "출석 인증 · 불안구독해지센터" };
 export const dynamic = "force-dynamic";
 
 export default async function Page() {

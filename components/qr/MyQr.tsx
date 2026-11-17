@@ -93,7 +93,7 @@ export function MyQr() {
             </div>
             <a
               href={img}
-              download={`B-Origin-QR-${me.uid}.png`}
+              download={`불안구독해지센터-QR-${me.uid}.png`}
               className="mt-5 block w-full rounded-2xl bg-brand py-4 text-center text-lg font-bold text-white"
             >
               QR 저장하기
