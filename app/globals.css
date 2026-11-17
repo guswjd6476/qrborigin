@@ -1,26 +1,29 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* B:Origin 디자인 토큰 — 화이트 바탕, 블루/그린 대비, 굵은 타이포, 얇은 선, 그림자 최소 */
+@theme {
+  --color-brand: #0a45e6;        /* Primary Blue */
+  --color-brand-deep: #0733b0;
+  --color-leaf: #8fd94a;         /* Secondary Green */
+  --color-leaf-deep: #4f9a17;    /* 흰 바탕 위 그린 글자용 */
+  --color-navy: #0b1a3a;         /* Text */
+  --color-mist: #edf2ff;         /* 연한 블루 */
+  --color-sprout: #f1fae6;       /* 연한 그린 */
+  --color-line: #e3e8f1;         /* 얇은 구분선 */
+  --color-muted: #6b7690;
+  --color-danger: #e5484d;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+html, body { background: #fff; color: var(--color-navy); }
+body { -webkit-font-smoothing: antialiased; word-break: keep-all; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+@keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.animate-pop { animation: pop .22s ease-out both; }
+.animate-fade { animation: fade .18s ease-out both; }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* html5-qrcode 가 넣는 video 를 카메라 영역에 꽉 채운다(거울 모드) */
+#qr-reader video { width: 100% !important; height: 100% !important; object-fit: cover; transform: scaleX(-1); }
+#qr-reader { border: 0 !important; }
+#qr-reader img, #qr-reader__dashboard, #qr-reader__header_message { display: none !important; }
