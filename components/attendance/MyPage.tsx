@@ -45,6 +45,11 @@ export function MyPage() {
       if (seen.current) {
         const fresh = d.records.find((r) => !seen.current!.has(r.id) && r.attendance_date === d.today);
         if (fresh) setPopup(fresh);
+      } else if (new URLSearchParams(location.search).has("checked")) {
+        // QR 화면에서 출석 직후 넘어온 경우: 오늘 출석 완료 팝업
+        const todays = d.records.filter((r) => r.attendance_date === d.today);
+        if (todays.length) setPopup(todays[todays.length - 1]);
+        history.replaceState(null, "", "/my-page");
       }
       seen.current = new Set(d.records.map((r) => r.id));
       if (d.realtime) live.current?.setToken(d.realtime.token);

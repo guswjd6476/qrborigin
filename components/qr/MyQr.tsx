@@ -1,14 +1,18 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import QRCode from "qrcode";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LoginForm } from "../attendance/LoginForm";
 import { MobileHeader } from "../layout/MobileHeader";
 import { GreenBar } from "../layout/Logo";
 
 type Me = { uid: string; name: string; qr: string };
 
+const WATCH_MS = 3000;
+
 export function MyQr() {
+  const router = useRouter();
   const [me, setMe] = useState<Me | null | "unauth" | "error">(null);
   const [img, setImg] = useState("");
 
@@ -26,6 +30,30 @@ export function MyQr() {
     if (me && typeof me === "object")
       QRCode.toDataURL(me.qr, { width: 720, margin: 2, errorCorrectionLevel: "M", color: { dark: "#0b1a3a", light: "#ffffff" } }).then(setImg);
   }, [me]);
+
+  // QR 이 찍히면(새 출석 기록이 생기면) 달력 화면으로 넘어간다
+  const loggedIn = !!me && typeof me === "object";
+  const known = useRef<Set<string> | null>(null);
+  useEffect(() => {
+    if (!loggedIn) return;
+    known.current = null;
+    const check = async () => {
+      if (document.visibilityState !== "visible") return;
+      try {
+        const res = await fetch("/api/me", { cache: "no-store" });
+        if (!res.ok) return;
+        const ids: string[] = (await res.json()).records.map((r: { id: string }) => r.id);
+        if (known.current && ids.some((id) => !known.current!.has(id))) return router.push("/my-page?checked=1");
+        known.current = new Set(ids);
+      } catch {
+        // 오프라인: 다음 주기에 다시 확인
+      }
+    };
+    check();
+    // shortcut: Realtime 대신 3초 폴링(QR 화면을 켜 둔 동안만), 사용자가 아주 많아지면 Realtime 구독으로 바꾸기
+    const t = setInterval(check, WATCH_MS);
+    return () => clearInterval(t);
+  }, [loggedIn, router]);
 
   async function logout() {
     await fetch("/api/auth/login", { method: "DELETE" });
@@ -76,7 +104,7 @@ export function MyQr() {
               <h2 className="font-bold text-brand">출석 이용 안내</h2>
               <ol className="mt-2 list-decimal space-y-1 pl-4">
                 <li>현장 출석 인증 카메라에 이 QR 을 보여주세요.</li>
-                <li>인증되면 마이페이지 달력에 바로 체크 표시가 됩니다.</li>
+                <li>인증되면 자동으로 출석 달력 화면으로 넘어갑니다.</li>
                 <li>QR 은 본인만 사용하세요. 다른 사람에게 보내지 마세요.</li>
                 <li>화면 밝기를 높이면 더 빨리 인식됩니다.</li>
               </ol>
